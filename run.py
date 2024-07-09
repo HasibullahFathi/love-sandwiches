@@ -53,23 +53,34 @@ def validate_data(values):
     return True
     
 
-def update_sales_worksheet(data):
-    """
-    update sales data in a new row in the google sheet
-    """
-    print("Update Sales worksheet.\n")
-    sales_worksheet = SHEET.worksheet('sales')
-    sales_worksheet.append_row(data)
-    print("Data entered in sales successfully!\n")
+# def update_sales_worksheet(data):
+#     """
+#     update sales data in a new row in the google sheet
+#     """
+#     print("Update Sales worksheet.\n")
+#     sales_worksheet = SHEET.worksheet('sales')
+#     sales_worksheet.append_row(data)
+#     print("Data entered in sales successfully!\n")
 
-def update_surplus_worksheet(data):
+# def update_surplus_worksheet(data):
+#     """
+#     update surplus data in a new row in the google sheet
+#     """
+#     print("Update Surplus worksheet.\n")
+#     surplus_worksheet = SHEET.worksheet('surplus')
+#     surplus_worksheet.append_row(data)
+#     print("Data entered in the surplus successfully!\n")
+
+# refactorin update surplus and update sales sheet methods
+def update_worksheet(data, worksheet):
     """
-    update surplus data in a new row in the google sheet
+    Recieve a list of int to be inserted in a worksheet 
+    update the relevant worksheet withh the given data.
     """
-    print("Update Surplus worksheet.\n")
-    surplus_worksheet = SHEET.worksheet('surplus')
-    surplus_worksheet.append_row(data)
-    print("Data entered in the surplus successfully!\n")
+    print(f"Update {worksheet} worksheet.\n")
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    worksheet_to_update.append_row(data)
+    print(f"Data entered in {worksheet} successfully!\n")
 
 def calculate_surplus_data(sales_row):
     """
@@ -93,9 +104,10 @@ def main():
     """ Main function runs all the functions"""
     data = get_sales_data()
     sales_data = [int(num) for num in data]
-    update_sales_worksheet(sales_data)
+    update_worksheet(sales_data, 'sales')
     new_surplus_data = calculate_surplus_data(sales_data)
-    update_surplus_worksheet(new_surplus_data)
+    update_worksheet(new_surplus_data, 'surplus')
+    
 
 
 print("Welcome to the Sales Manager!\n")
