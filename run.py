@@ -60,7 +60,16 @@ def update_sales_worksheet(data):
     print("Update Sales worksheet.\n")
     sales_worksheet = SHEET.worksheet('sales')
     sales_worksheet.append_row(data)
-    print("Data entered successfully!\n")
+    print("Data entered in sales successfully!\n")
+
+def update_surplus_worksheet(data):
+    """
+    update surplus data in a new row in the google sheet
+    """
+    print("Update Surplus worksheet.\n")
+    surplus_worksheet = SHEET.worksheet('surplus')
+    surplus_worksheet.append_row(data)
+    print("Data entered in the surplus successfully!\n")
 
 def calculate_surplus_data(sales_row):
     """
@@ -70,15 +79,23 @@ def calculate_surplus_data(sales_row):
     """
     print("calculating the surplus")
     stock = SHEET.worksheet('stock').get_all_values()
-    sales_row = stock[-1]
-    print(sales_row)
+    stock_row = stock[-1]
+    
+    surplus_data = []
+    for stock, sales in zip(stock_row, sales_row):
+        surplus = int(stock) - sales
+        surplus_data.append(surplus)
+    
+    return surplus_data
+
 
 def main():
     """ Main function runs all the functions"""
     data = get_sales_data()
     sales_data = [int(num) for num in data]
     update_sales_worksheet(sales_data)
-    calculate_surplus_data(sales_data)
+    new_surplus_data = calculate_surplus_data(sales_data)
+    update_surplus_worksheet(new_surplus_data)
 
 
 print("Welcome to the Sales Manager!\n")
