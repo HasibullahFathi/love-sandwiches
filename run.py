@@ -36,7 +36,7 @@ def get_sales_data():
 
 def validate_data(values):
     """
-    validate sales data, inside try statement converting data into integers 
+    run a while loop to validate sales data, inside try statement converting data into integers 
     raise ValueError if values are not covertable to integers or it is not exactly six.
     """
     try:
@@ -52,6 +52,16 @@ def validate_data(values):
     return True
     
 
+def update_sales_worksheet(data):
+    """
+    update sales data in a new row in the google sheet
+    """
+    print("Update Sales worksheet.\n")
+    sales_worksheet = SHEET.worksheet('sales')
+    sales_worksheet.append_row(data)
+    print("Data entered successfully!\n")
 
 data = get_sales_data()
+sales_data = [int(num) for num in data]
 
+update_sales_worksheet(sales_data)
