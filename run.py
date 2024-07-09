@@ -36,6 +36,7 @@ def validate_data(values):
     raise ValueError if values are not covertable to integers or it is not exactly six.
     """
     try:
+        [int(value) for value in values]
         if len(values) != 6:
             raise ValueError(
                 f"Sales data should contain exactly 6 values you provided {len(values)}"
