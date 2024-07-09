@@ -77,7 +77,7 @@ def update_worksheet(data, worksheet):
     Recieve a list of int to be inserted in a worksheet 
     update the relevant worksheet withh the given data.
     """
-    print(f"Update {worksheet} worksheet.\n")
+    print(f"Updating {worksheet} worksheet...\n")
     worksheet_to_update = SHEET.worksheet(worksheet)
     worksheet_to_update.append_row(data)
     print(f"Data entered in {worksheet} successfully!\n")
@@ -88,7 +88,7 @@ def calculate_surplus_data(sales_row):
     if the number of items is positive then the we have waste
     if the number of items is negative it means that made extra items when the stock was sold out.
     """
-    print("calculating the surplus")
+    print("calculating the surplus...\n")
     stock = SHEET.worksheet('stock').get_all_values()
     stock_row = stock[-1]
     
@@ -115,6 +115,22 @@ def get_last_5_entries_sales():
     
     return columns
 
+def calculate_stock_date(data):
+    """
+    Calculates the average stock for each item type , adding 10%.
+    """
+    print("Calculating the average stock")
+    
+    new_stock_data = []
+    for column in data:
+        int_column = [int(num) for num in column]
+        average = sum(int_column) / len(int_column)
+        stock_num = average * 1.1
+        new_stock_data.append(round(stock_num))
+
+    return new_stock_data
+
+
 def main():
     """ Main function runs all the functions"""
     data = get_sales_data()
@@ -122,9 +138,11 @@ def main():
     update_worksheet(sales_data, 'sales')
     new_surplus_data = calculate_surplus_data(sales_data)
     update_worksheet(new_surplus_data, 'surplus')
+    sales_columns = get_last_5_entries_sales()
+    stock_data = calculate_stock_date(sales_columns)
+    update_worksheet(stock_data, 'stock')
     
 
 
 print("Welcome to the Sales Manager!\n")
-# main()
-sales_columns = get_last_5_entries_sales()
+main()
