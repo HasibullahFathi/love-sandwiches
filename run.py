@@ -3,6 +3,7 @@
 # Write your code to expect a terminal of 80 characters wide and 24 rows high
 import gspread
 from google.oauth2.service_account import Credentials
+from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -61,7 +62,24 @@ def update_sales_worksheet(data):
     sales_worksheet.append_row(data)
     print("Data entered successfully!\n")
 
-data = get_sales_data()
-sales_data = [int(num) for num in data]
+def calculate_surplus_data(sales_row):
+    """
+    compare stock data with sales and calculates the surplus for each item.
+    if the number of items is positive then the we have waste
+    if the number of items is negative it means that made extra items when the stock was sold out.
+    """
+    print("calculating the surplus")
+    stock = SHEET.worksheet('stock').get_all_values()
+    sales_row = stock[-1]
+    print(sales_row)
 
-update_sales_worksheet(sales_data)
+def main():
+    """ Main function runs all the functions"""
+    data = get_sales_data()
+    sales_data = [int(num) for num in data]
+    update_sales_worksheet(sales_data)
+    calculate_surplus_data(sales_data)
+
+
+print("Welcome to the Sales Manager!\n")
+main()
